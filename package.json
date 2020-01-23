@@ -4,7 +4,9 @@
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run eslint",
+    "eslint": "eslint --ext .js src/",
+    "start": "node ./src/service/service.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/iashchuk/93555-typoteka-3/issues"
   },
-  "homepage": "https://github.com/iashchuk/93555-typoteka-3#readme"
+  "homepage": "https://github.com/iashchuk/93555-typoteka-3#readme",
+  "devDependencies": {
+    "eslint": "6.8.0",
+    "eslint-config-htmlacademy": "0.5.2"
+  }
 }
