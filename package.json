@@ -1,0 +1,19 @@
+{
+  "name": "93555-typoteka-3",
+  "version": "1.0.0",
+  "description": "Типотека",
+  "main": "./src/service/service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iashchuk/93555-typoteka-3.git"
+  },
+  "author": "Vitalii Iashchuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iashchuk/93555-typoteka-3/issues"
+  },
+  "homepage": "https://github.com/iashchuk/93555-typoteka-3#readme"
+}
