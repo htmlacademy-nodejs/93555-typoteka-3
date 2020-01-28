@@ -3,8 +3,8 @@
 const fs = require(`fs`);
 const chalk = require(`chalk`);
 
-const { getRandomInt, shuffle } = require(`../../utils`);
-const { ExitCode } = require(`../../constants`);
+const {getRandomInt, shuffle} = require(`../../utils`);
+const {ExitCode} = require(`../../constants`);
 
 const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
@@ -87,12 +87,18 @@ module.exports = {
   run(args) {
     const [count] = args;
 
-    if (count > MAX_COUNT) {
-      console.log(chalk.red(`Не больше 1000 публикаций.`));
+    if (count !== undefined && isNaN(count)) {
+      console.log(chalk.red(`В качестве параметра необходимо ввести число.`));
       process.exit(ExitCode.error);
     }
 
     const countOffer = Number(count) || DEFAULT_COUNT;
+
+    if (countOffer > MAX_COUNT) {
+      console.log(chalk.red(`Не больше 1000 публикаций.`));
+      process.exit(ExitCode.error);
+    }
+
     const content = JSON.stringify(generateOffers(countOffer));
 
     fs.writeFile(FILE_NAME, content, (err) => {

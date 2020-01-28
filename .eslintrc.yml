@@ -6,6 +6,3 @@ env:
   node: true
 
 extends: "htmlacademy/node"
-
-rules:
-  object-curly-spacing: 0
