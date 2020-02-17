@@ -13,7 +13,6 @@ const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
 
-
 const Time = {
   MS: 1000,
   SECONDS: 60,
@@ -38,21 +37,20 @@ const readContent = async (filePath) => {
   }
 };
 
-
 const generateOffers = async (count) => {
-  const sentences = await readContent(FILE_SENTENCES_PATH);
-  const titles = await readContent(FILE_TITLES_PATH);
-  const categories = await readContent(FILE_CATEGORIES_PATH);
+  const [sentences, titles, categories] = await Promise.all([
+    readContent(FILE_SENTENCES_PATH),
+    readContent(FILE_TITLES_PATH),
+    readContent(FILE_CATEGORIES_PATH)
+  ]);
 
-  return Array(count)
-    .fill({})
-    .map(() => ({
-      title: titles[getRandomInt(0, titles.length - 1)],
-      announce: shuffle(sentences).slice(0, 5).join(` `),
-      fullText: shuffle(sentences).slice(0, 10).join(` `),
-      createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max)),
-      category: shuffle(categories).slice(0, 3),
-    }));
+  return Array(count).fill({}).map(() => ({
+    title: titles[getRandomInt(0, titles.length - 1)],
+    announce: shuffle(sentences).slice(0, 5).join(` `),
+    fullText: shuffle(sentences).slice(0, 10).join(` `),
+    createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max)),
+    category: shuffle(categories).slice(0, 3),
+  }));
 };
 
 
@@ -60,7 +58,6 @@ module.exports = {
   name: `--generate`,
   async run(args) {
     const [count] = args;
-
 
     if (count !== undefined && isNaN(count)) {
       console.log(chalk.red(`В качестве параметра необходимо ввести число.`));
@@ -74,7 +71,7 @@ module.exports = {
       process.exit(ExitCode.error);
     }
 
-    const content = JSON.stringify(generateOffers(countOffer));
+    const content = JSON.stringify(await generateOffers(countOffer));
 
     try {
       await fs.writeFile(FILE_NAME, content);
