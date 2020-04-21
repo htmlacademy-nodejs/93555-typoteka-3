@@ -1,0 +1,63 @@
+include ../partials/head.pug
+include ../partials/preview-item.pug
+// ОБЩАЯ С MAIN страница
+body
+  div.wrapper
+    header.header
+      a.header__logo.logo(href='#')
+        img(src='/img/icons/logo.svg' alt='логотип Тайпотеки')
+      a.header__registration(href='#') Регистрация
+      a.header__enter(href='#') Вход с паролем
+      a.header__search.button.button--search(href='#' aria-label='поиск по сайту')
+    main.articles-category
+      h1 Бизнес
+      section.articles-category__theme-list
+        h2.visually-hidden Список тем
+        ul.themes
+          li.themes__item
+            a.themes__item-link(href='#')
+              | Автомобили 
+              sup 88
+          li.themes__item
+            a.themes__item-link(href='#')
+              | Удаленная работа 
+              sup 13
+          li.themes__item
+            a.themes__item-link.themes__item-link--active
+              | Бизнес 
+              sup 13
+          li.themes__item
+            a.themes__item-link(href='#')
+              | Путешествия 
+              sup 13
+          li.themes__item
+            a.themes__item-link.themes__item-link--padding(href='#')
+              | Дизайн и обустройство 
+              sup 13
+          li.themes__item
+            a.themes__item-link(href='#')
+              | Производство игрушек 
+              sup 22
+          li.themes__item
+            a.themes__item-link(href='#')
+              | UX & UI 
+              sup 22
+      section.articles-category__list.preview
+        h2.visually-hidden Список превью статей
+        ul.preview__list
+          +PreviewItem([{name: 'Дизайн', link: "#"}, {name: 'Удаленная работа', link: "#"}], '21.03.2019, 20:33', 'Я ничего не понял', 'Если вы сами пишете такие письма — почитайте Ильяхова. А в этой заметке я расскажу про заклинание, которое от таких писем помогает.', 12, {
+            src: 'img/skyscraper@1x.jpg', srcset: '/img/skyscraper@1x.jpg, /img/skyscraper@2x.jpg 2x',
+            alt: 'Фотография небоскреба'
+        })
+          +PreviewItem([{name: 'Фриланс', link: "#"}], '21.03.2019, 20:33', 'Путешествие в Голландию', 'Если вы сами пишете такие письма — почитайте Ильяхова. А в этой заметке я расскажу про заклинание, которое от таких писем помогает.', 12, {
+            src: '/img/sea@1x.jpg', srcset: '/img/sea@1x.jpg, /img/sea@2x.jpg 2x',
+            alt: 'Фотография моря'
+        })
+          +PreviewItem([{name: 'Фриланс', link: "#"}], '21.03.2019, 20:33', 'Путин подписал закон о предустановке российских приложений на смартфоны и другую электронику', 'Президент России Владимир Путин подписал закон об обязательной предустановке российского программного обеспечения на электронную технику, продаваемую в России. Документ опубликован на официальном сайте правовой информации.', 12)
+          +PreviewItem([{name: 'Дизайн', link: "#"}, {name: 'Удаленная работа', link: "#"}], '21.03.2019, 20:33', 'Я понял, но не все', 'Если вы сами пишете такие письма — почитайте Ильяхова. А в этой заметке я расскажу про заклинание, которое от таких писем помогает.', 12, {
+            src: '/img/forest@1x.jpg', srcset: '/img/forest@1x.jpg, /img/forest@2x.jpg 2x',
+            alt: 'Фотография леса'
+        })
+    include ../partials/footer.pug
+//-   script(src='/js/vendor.js')
+//-   script(src='/js/main.js')
