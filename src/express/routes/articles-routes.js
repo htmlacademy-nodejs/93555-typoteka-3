@@ -2,10 +2,11 @@
 
 const {Router} = require(`express`);
 const articlesRouter = new Router();
+const {themes, previews, postComments} = require(`../mocks`);
 
-articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles/articles-by-category`));
+
+articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles/articles-by-category`, {themes, previews}));
 articlesRouter.get(`/add`, (req, res) => res.render(`articles/new-post`));
-articlesRouter.get(`/edit/:id`, (req, res) => res.send(`/articles/edit/:id`));
-articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
+articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`, {themes: themes.slice(0, 3), comments: postComments}));
 
 module.exports = articlesRouter;
