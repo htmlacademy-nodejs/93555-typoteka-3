@@ -1,0 +1,19 @@
+extends layout/index.pug
+include partials/mixins/preview-list.pug
+include partials/mixins/themes.pug
+include partials/mixins/hot-news.pug
+include partials/mixins/last-comments.pug
+
+block variables
+  - var mainClass = 'main-page';
+
+block content
+  h1.visually-hidden Главная страница личного блога Типотека
+  p Это приветственный текст, который владелец блога может выбрать, чтобы описать себя 👏
+  +Themes(themes, 'main-page__theme-list')
+
+  div.main-page__section-flex
+    +HotNews(news)
+    +LastComments(comments, 'main-page__last')
+
+  +PreviewList(previews, 'main-page__list')
