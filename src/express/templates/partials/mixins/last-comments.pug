@@ -1,0 +1,13 @@
+mixin LastComments(comments, className)
+  -var classes = [className, 'last'];
+
+  section(class=classes)
+    h2.last__name
+      | Последние комментарии 
+      span.last__icon.last__icon--cloud
+    ul.last__list
+      each comment in comments
+        li.last__list-item
+          img.last__list-image(src=`${comment.avatar}` width='20' height='20' alt='Аватар пользователя')
+          b.last__list-name #{comment.author}
+          a.last__list-link(href='#') #{comment.text}

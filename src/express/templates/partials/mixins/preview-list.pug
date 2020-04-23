@@ -1,0 +1,22 @@
+mixin PreviewList(previews, className)
+  -var classes = [className, 'preview'];
+
+  section(class=classes)
+    h2.visually-hidden Список превью статей
+    ul.preview__list
+      each preview in previews
+        li.preview__item
+          ul.preview__breadcrumbs
+            each breadcrumb in preview.breadcrumbs
+              li.preview__breadcrumbs-item
+                a.preview__breadcrumbs-link(href=`${breadcrumb.link}`) #{breadcrumb.name}
+          if preview.image
+            div.preview__background
+              img.preview__background-image(src=`${preview.image.src}` width='460' height='240' srcset=`${preview.image.srcset}` alt=`${preview.image.alt}`)
+          time.preview__time(datetime=`${preview.datetime}`) #{preview.date}
+          h3.preview__name
+            a.preview__name-link(href='#') #{preview.title}
+          p.preview__text #{preview.text}
+          a.preview__comment(href='#') Комментарии 
+            span.preview__cloud 
+            b.preview__comment-count #{preview.comments}
