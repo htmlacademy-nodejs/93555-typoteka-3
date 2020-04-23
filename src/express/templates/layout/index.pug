@@ -1,0 +1,11 @@
+block variables
+
+include head.pug
+body
+  div(class=wrapperClass || 'wrapper')
+    include header.pug
+    main(class=mainClass)
+      block content
+    include footer.pug
+  //- script(src='js/vendor.js')
+  //- script(src='js/main.js')
