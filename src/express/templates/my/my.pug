@@ -1,0 +1,17 @@
+extends ../layout/index.pug
+
+block variables
+  - var wrapperClass = 'wrapper wrapper--nobackground';
+  - var mainClass = 'main-page main-page--padding';
+
+block content
+  section.main-page__notes.notes
+    h1.notes__title Мои записи
+    if notes.length > 0
+      ul.notes__list
+        each note in notes
+          li.notes__list-item
+            time.notes__item-time(datetime=`${note.datetime}`) #{note.date}
+            a.notes__item-text(href='#') #{note.text}
+            button.notes__button.button.button--close-item(type='button')
+              span.visually-hidden Закрыть строку списка

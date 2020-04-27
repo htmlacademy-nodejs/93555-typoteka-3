@@ -1,0 +1,11 @@
+extends ../layout/index.pug
+include ../partials/mixins/preview-list.pug
+include ../partials/mixins/themes.pug
+
+block variables
+  - var mainClass = 'articles-category';
+
+block content
+  h1 Бизнес
+  +Themes(themes, 'articles-category__theme-list')
+  +PreviewList(previews, 'articles-category__list')

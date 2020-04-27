@@ -1,0 +1,10 @@
+mixin Themes(themes, className)
+  section(class=className)
+    h2.visually-hidden Список тем
+    ul.themes
+      each theme in themes
+        li.themes__item
+          a.themes__item-link(href='#')
+            | #{theme.name} 
+            sup #{theme.count}
+          button.themes__remove-btn(type='button') Удалить категорию

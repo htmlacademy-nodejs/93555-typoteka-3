@@ -1,0 +1,6 @@
+- var menu = [{url: "/", label: "Главная страница"}, {url: "/login", label: "Вход"}, {url: "/signup", label: "Регистрация"}, {url: "/search", label: "Поиск"}, {url: "/categories", label: "Все категории"}, {url: "/my", label: "Мои публикации"}, {url: "/my/comments", label: "Список комментариев к публикациям"}, {url: "/articles/category/1", label: "Публикации в определённой категории"}, {url: "/articles/add", label: "Cтраница создания новой публикации"}, {url: "/articles/:id", label: "Cтраница публикации"}, {url: "/not-found", label: "Cтраница для отображения ошибки 404"}];
+
+ul.navigation.header__navigation
+  each item in menu
+    li.navigation__item
+      a(href=`${item.url}`) #{item.label}

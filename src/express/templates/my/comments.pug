@@ -1,0 +1,21 @@
+extends ../layout/index.pug
+
+block variables
+  - var wrapperClass = 'wrapper wrapper--nobackground';
+  - var mainClass = 'main-page main-page--padding';
+
+block content
+  section.main-page__publication.publication
+    h1.publication__title Комментарии
+    if comments.length > 0
+      ul.publication__list
+        each comment in comments
+          li.publication__list-item
+            div.publication__header
+              img.publication__list-image(src=`${comment.avatar}` width='20' height='20' alt='Аватар пользователя')
+              b.publication__list-name Александр Петров
+              time.publication__item-time(datetime=`${comment.datetime}`) #{comment.data}
+            a.publication__item-text(href='#') #{comment.text}
+            p.publication__text-strong #{comment.main}
+            button.publication__button.button.button--close-item(type='button')
+            span.visually-hidden Закрыть строку списка

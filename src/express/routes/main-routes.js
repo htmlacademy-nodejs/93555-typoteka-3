@@ -2,11 +2,13 @@
 
 const {Router} = require(`express`);
 const mainRouter = new Router();
+const {themes, previews, news, lastComments, categories} = require(`../mocks`);
 
-mainRouter.get(`/`, (req, res) => res.send(`/`));
-mainRouter.get(`/register`, (req, res) => res.send(`/register`));
-mainRouter.get(`/login`, (req, res) => res.send(`/login`));
-mainRouter.get(`/search`, (req, res) => res.send(`/search`));
-mainRouter.get(`/categories`, (req, res) => res.send(`/categories`));
+
+mainRouter.get(`/`, (req, res) => res.render(`main`, {themes, previews, news, comments: lastComments}));
+mainRouter.get(`/signup`, (req, res) => res.render(`sign-up`));
+mainRouter.get(`/login`, (req, res) => res.render(`login`));
+mainRouter.get(`/search`, (req, res) => res.render(`search`));
+mainRouter.get(`/categories`, (req, res) => res.render(`all-categories`, {categories}));
 
 module.exports = mainRouter;
