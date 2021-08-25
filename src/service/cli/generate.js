@@ -8,6 +8,7 @@ const {ExitCode} = require(`../../constants`);
 
 const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
+const MAX_ID_LENGTH = 6;
 const FILE_NAME = `mocks.json`;
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
@@ -45,6 +46,7 @@ const generateOffers = async (count) => {
   ]);
 
   return Array(count).fill({}).map(() => ({
+    id: nanoid(MAX_ID_LENGTH),
     title: titles[getRandomInt(0, titles.length - 1)],
     announce: shuffle(sentences).slice(0, 5).join(` `),
     fullText: shuffle(sentences).slice(0, 10).join(` `),
