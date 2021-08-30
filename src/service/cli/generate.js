@@ -57,15 +57,21 @@ const generateArticles = async (count) => {
     readContent(FILE_COMMENTS_PATH)
   ]);
 
-  return Array(count).fill({}).map(() => ({
-    id: nanoid(MAX_ID_LENGTH),
-    title: titles[getRandomInt(0, titles.length - 1)],
-    announce: shuffle(sentences).slice(0, 5).join(` `),
-    fullText: shuffle(sentences).slice(0, 10).join(` `),
-    category: shuffle(categories).slice(0, 3),
-    comments: generateComments(getRandomInt(0, comments.length - 1), comments),
-    createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max)),
-  }));
+  return Array(count).fill({}).map(() => {
+    const announceCount = getRandomInt(1, 5);
+    const fullTextCount = getRandomInt(1, 10);
+    const categoryCount = getRandomInt(1, 3);
+
+    return {
+      id: nanoid(MAX_ID_LENGTH),
+      title: titles[getRandomInt(0, titles.length - 1)],
+      announce: shuffle(sentences).slice(0, announceCount).join(` `),
+      fullText: shuffle(sentences).slice(0, fullTextCount).join(` `),
+      category: shuffle(categories).slice(0, categoryCount),
+      comments: generateComments(getRandomInt(0, comments.length - 1), comments),
+      createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max))
+    }
+  });
 };
 
 
@@ -86,9 +92,8 @@ module.exports = {
       process.exit(ExitCode.error);
     }
 
-    const content = JSON.stringify(await generateArticles(countArticles));
-
     try {
+      const content = JSON.stringify(await generateArticles(countArticles));
       await fs.writeFile(FILE_NAME, content);
       console.info(chalk.green(`Операция выполнена успешно. Файл создан.`));
       process.exit(ExitCode.success);

@@ -3,14 +3,14 @@
 const { Router } = require(`express`);
 const { HttpCode } = require(`../../constants`);
 
-module.exports = (app, service) => {
-  const route = new Router();
+module.exports = (appRouter, service) => {
+  const router = new Router();
 
-  route.get(`/`, (req, res) => {
+  router.get(`/`, (req, res) => {
     const { query = `` } = req.query;
 
     if (!query) {
-      return res.status(HttpCode.BAD_REQUEST).json([]);;
+      return res.status(HttpCode.BAD_REQUEST).json([]);
     }
 
     const searchResults = service.findAll(query);
@@ -19,5 +19,5 @@ module.exports = (app, service) => {
     return res.status(searchStatus).json(searchResults);
   });
 
-  app.use(`/search`, route);
+  appRouter.use(`/search`, router);
 };

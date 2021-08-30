@@ -1,8 +1,11 @@
 'use strict';
 
 const { Router } = require(`express`);
+const chalk = require(`chalk`);
+
 const category = require(`./category`);
 const article = require(`./article`);
+const comments = require(`./comments`);
 const search = require(`./search`);
 
 const {
@@ -15,15 +18,20 @@ const {
 const getMockData = require(`../lib/get-mock-data`);
 
 const getApiRoutes = async () => {
-  const app = new Router();
+  const appRouter = new Router();
 
-  const mockData = await getMockData();
+  try {
+    const mockData = await getMockData();
 
-  category(app, new CategoryService(mockData));
-  article(app, new ArticleService(mockData), new CommentService());
-  search(app, new SearchService(mockData));
+    category(appRouter, new CategoryService(mockData));
+    article(appRouter, new ArticleService(mockData));
+    comments(appRouter, new ArticleService(mockData), new CommentService());
+    search(appRouter, new SearchService(mockData));
 
-  return app;
+    return appRouter;
+  } catch (error) {
+    console.error(chalk.red(`Ошибка при создании роутера`, error));
+  }
 };
 
 module.exports = getApiRoutes;
