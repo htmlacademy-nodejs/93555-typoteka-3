@@ -2,17 +2,19 @@
 
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
+const { nanoid } = require(`nanoid`);
 
-const {getRandomInt, shuffle} = require(`../../utils`);
-const {ExitCode} = require(`../../constants`);
+const { getRandomInt, shuffle } = require(`../../utils`);
+const { ExitCode, MAX_ID_LENGTH } = require(`../../constants`);
 
 const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
-const MAX_ID_LENGTH = 6;
+
 const FILE_NAME = `mocks.json`;
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+const FILE_COMMENTS_PATH = `./data/comments.txt`;
 
 const Time = {
   MS: 1000,
@@ -38,11 +40,21 @@ const readContent = async (filePath) => {
   }
 };
 
-const generateOffers = async (count) => {
-  const [sentences, titles, categories] = await Promise.all([
+const generateComments = (count, comments) => (
+  Array(count).fill({}).map(() => ({
+    id: nanoid(MAX_ID_LENGTH),
+    text: shuffle(comments)
+      .slice(0, getRandomInt(1, 3))
+      .join(` `),
+  }))
+);
+
+const generateArticles = async (count) => {
+  const [sentences, titles, categories, comments] = await Promise.all([
     readContent(FILE_SENTENCES_PATH),
     readContent(FILE_TITLES_PATH),
-    readContent(FILE_CATEGORIES_PATH)
+    readContent(FILE_CATEGORIES_PATH),
+    readContent(FILE_COMMENTS_PATH)
   ]);
 
   return Array(count).fill({}).map(() => ({
@@ -50,8 +62,9 @@ const generateOffers = async (count) => {
     title: titles[getRandomInt(0, titles.length - 1)],
     announce: shuffle(sentences).slice(0, 5).join(` `),
     fullText: shuffle(sentences).slice(0, 10).join(` `),
-    createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max)),
     category: shuffle(categories).slice(0, 3),
+    comments: generateComments(getRandomInt(0, comments.length - 1), comments),
+    createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max)),
   }));
 };
 
@@ -66,14 +79,14 @@ module.exports = {
       process.exit(ExitCode.error);
     }
 
-    const countOffer = Number(count) || DEFAULT_COUNT;
+    const countArticles = Number(count) || DEFAULT_COUNT;
 
-    if (countOffer > MAX_COUNT) {
+    if (countArticles > MAX_COUNT) {
       console.log(chalk.red(`Не больше 1000 публикаций.`));
       process.exit(ExitCode.error);
     }
 
-    const content = JSON.stringify(await generateOffers(countOffer));
+    const content = JSON.stringify(await generateArticles(countArticles));
 
     try {
       await fs.writeFile(FILE_NAME, content);

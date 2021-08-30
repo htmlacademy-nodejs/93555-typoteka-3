@@ -19,4 +19,6 @@ module.exports.HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+module.exports.MAX_ID_LENGTH = 10;
+
 module.exports.API_PREFIX = `/api`;

@@ -1,22 +1,29 @@
 'use strict';
 
-const fs = require(`fs`).promises;
-const {Router} = require(`express`);
-const chalk = require(`chalk`);
+const { Router } = require(`express`);
+const category = require(`./category`);
+const article = require(`./article`);
+const search = require(`./search`);
 
-const DATA_FILENAME = `mocks.json`;
+const {
+  CategoryService,
+  SearchService,
+  ArticleService,
+  CommentService,
+} = require(`../data-service`);
 
-const app = new Router();
+const getMockData = require(`../lib/get-mock-data`);
 
-app.get(`/posts`, async (_req, res) => {
-  try {
-    const fileContent = await fs.readFile(DATA_FILENAME);
-    const mocks = JSON.parse(fileContent);
-    res.json(mocks);
-  } catch (err) {
-    console.log(chalk.red(err));
-    res.json([]);
-  }
-});
+const getApiRoutes = async () => {
+  const app = new Router();
 
-module.exports = app;
+  const mockData = await getMockData();
+
+  category(app, new CategoryService(mockData));
+  article(app, new ArticleService(mockData), new CommentService());
+  search(app, new SearchService(mockData));
+
+  return app;
+};
+
+module.exports = getApiRoutes;
