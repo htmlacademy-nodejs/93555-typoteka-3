@@ -1,36 +1,16 @@
 "use strict";
 
-const chalk = require(`chalk`);
 const express = require(`express`);
-const fs = require(`fs`).promises;
-const {HttpCode, ExitCode} = require(`../../constants`);
+const chalk = require(`chalk`);
+
+const { HttpCode, ExitCode, API_PREFIX } = require(`../../constants`);
+const getApiRoutes = require(`../api`);
 
 const DEFAULT_PORT = 3000;
-const DATA_FILENAME = `mocks.json`;
-
-const app = express();
-app.use(express.json());
-
-app.get(`/posts`, async (req, res) => {
-  try {
-    const fileContent = await fs.readFile(DATA_FILENAME);
-    const mocks = JSON.parse(fileContent);
-    res.json(mocks);
-  } catch (err) {
-    console.log(chalk.red(err));
-    res.json([]);
-  }
-});
-
-app.use((req, res) => res
-  .status(HttpCode.NOT_FOUND)
-  .send(`Not found`));
-
 
 module.exports = {
   name: `--server`,
-  run(args) {
-
+  async run(args) {
     const [customPort] = args;
 
     if (customPort !== undefined && isNaN(customPort)) {
@@ -38,13 +18,28 @@ module.exports = {
       process.exit(ExitCode.error);
     }
 
+    const routes = await getApiRoutes();
+
+    if (!routes) {
+      process.exit(ExitCode.error);
+    }
+
+    const app = express();
     const port = Number(customPort) || DEFAULT_PORT;
+
+    app.use(express.json());
+    app.use(API_PREFIX, routes);
+    app.use((_req, res) => {
+      res.status(HttpCode.NOT_FOUND).send(`Not found`);
+    });
 
     app.listen(port, (err) => {
       if (err) {
         return console.error(`Ошибка при создании сервера`, err);
       }
-      return console.info(chalk.green(`Ожидаю соединение на http://localhost:${port}`));
+      return console.info(
+        chalk.green(`Ожидаю соединение на http://localhost:${port}`)
+      );
     });
-  }
+  },
 };

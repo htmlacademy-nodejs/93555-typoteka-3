@@ -1,7 +1,7 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Vitalii Iashchuk](https://up.htmlacademy.ru/nodejs/3/user/93555).
-* Наставник: [Сергей Рожков](https://up.htmlacademy.ru/nodejs/3/user/1069033).
+* Наставник: [Алексей Пушников](https://up.htmlacademy.ru/nodejs/3/user/476723).
 
 ---
 
