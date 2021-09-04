@@ -40,7 +40,7 @@ module.exports = (appRouter, articleService) => {
 
     const articleId = articleService.remove(article.id);
 
-    return res.status(HttpCode.OK).json(articleId);
+    return res.status(HttpCode.OK).json({ id: articleId });
   });
 
   appRouter.use(`/articles`, router);
