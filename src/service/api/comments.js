@@ -36,7 +36,7 @@ module.exports = (appRouter, articleService, commentService) => {
       return res.status(HttpCode.NOT_FOUND).send(`Comment not found`);
     }
 
-    return res.status(HttpCode.OK).json(removedCommentId);
+    return res.status(HttpCode.OK).json({ id: removedCommentId });
   });
 
   appRouter.use(`/articles`, router);
