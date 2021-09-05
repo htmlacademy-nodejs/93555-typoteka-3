@@ -1,12 +1,16 @@
-"use strict";
+'use strict';
 
 const express = require(`express`);
 const chalk = require(`chalk`);
 
-const { HttpCode, ExitCode, API_PREFIX } = require(`../../constants`);
+const { ExitCode, API_PREFIX } = require(`../../constants`);
 const getApiRoutes = require(`../api`);
+const { apiLogger } = require(`../lib/logger`);
+const { logRequests, logNotFound } = require('../middlewares/logHttp')
+const { logErrors } = require('../middlewares/logErrors')
 
 const DEFAULT_PORT = 3000;
+
 
 module.exports = {
   name: `--server`,
@@ -14,7 +18,7 @@ module.exports = {
     const [customPort] = args;
 
     if (customPort !== undefined && isNaN(customPort)) {
-      console.log(chalk.red(`В качестве порта необходимо ввести число.`));
+      apiLogger.error(chalk.red(`You must enter a number as the port`));
       process.exit(ExitCode.error);
     }
 
@@ -24,22 +28,22 @@ module.exports = {
       process.exit(ExitCode.error);
     }
 
-    const app = express();
     const port = Number(customPort) || DEFAULT_PORT;
 
+    const app = express();
+
     app.use(express.json());
+    app.use(logRequests);
     app.use(API_PREFIX, routes);
-    app.use((_req, res) => {
-      res.status(HttpCode.NOT_FOUND).send(`Not found`);
-    });
+    app.use(logNotFound);
+    app.use(logErrors);
 
     app.listen(port, (err) => {
       if (err) {
-        return console.error(`Ошибка при создании сервера`, err);
+        return apiLogger.error(`Server creation error`);
       }
-      return console.info(
-        chalk.green(`Ожидаю соединение на http://localhost:${port}`)
-      );
+      return apiLogger.info(`Server is running on http://localhost:${port}`)
+
     });
   },
 };
