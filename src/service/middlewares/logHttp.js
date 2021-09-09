@@ -1,3 +1,5 @@
+"use strict";
+
 const { apiLogger } = require(`../lib/logger`);
 const { HttpCode } = require(`../../constants`);
 

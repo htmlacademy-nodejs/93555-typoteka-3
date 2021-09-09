@@ -70,7 +70,7 @@ const generateArticles = async (count) => {
       categories: shuffle(categories).slice(0, categoryCount),
       comments: generateComments(getRandomInt(0, comments.length - 1), comments),
       createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max))
-    }
+    };
   });
 };
 

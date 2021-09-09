@@ -31,6 +31,7 @@ const getApiRoutes = async () => {
     return appRouter;
   } catch (error) {
     console.error(chalk.red(`Ошибка при создании роутера`, error));
+    return undefined;
   }
 };
 

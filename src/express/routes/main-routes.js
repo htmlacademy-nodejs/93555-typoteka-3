@@ -5,7 +5,7 @@ const mainRouter = new Router();
 const { themes } = require(`../mocks`);
 const { api } = require(`../api/api`);
 const { transformArticle } = require(`../api/adapter`);
-const { HttpCode } = require("../../constants");
+const { HttpCode } = require(`../../constants`);
 
 mainRouter.get(`/`, async (_req, res) => {
   const articles = await api.getArticles();

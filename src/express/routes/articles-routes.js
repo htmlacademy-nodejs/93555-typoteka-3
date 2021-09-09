@@ -53,7 +53,7 @@ articlesRouter.post(`/add`, upload.single(`picture`), async (req, res) => {
     return res.redirect(`/my`);
   } catch (err) {
     console.log(err);
-    renderAddPost(req, res);
+    return renderAddPost(req, res);
   }
 });
 

@@ -7,7 +7,7 @@ const articlesRoutes = require(`./routes/articles-routes`);
 const myRoutes = require(`./routes/my-routes`);
 const mainRoutes = require(`./routes/main-routes`);
 
-const {HttpCode} = require(`../constants`);
+const { HttpCode } = require(`../constants`);
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
