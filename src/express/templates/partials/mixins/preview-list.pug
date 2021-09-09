@@ -1,22 +1,22 @@
-mixin PreviewList(previews, className)
+mixin PreviewList(articles, className)
   -var classes = [className, 'preview'];
 
   section(class=classes)
-    h2.visually-hidden Список превью статей
+    h2.visually-hidden
     ul.preview__list
-      each preview in previews
-        li.preview__item
+      each article in articles
+        li.preview__item(class=article.picture ? `` : `preview__item--noimage`)
           ul.preview__breadcrumbs
-            each breadcrumb in preview.breadcrumbs
+            each category in article.categories
               li.preview__breadcrumbs-item
-                a.preview__breadcrumbs-link(href=`${breadcrumb.link}`) #{breadcrumb.name}
-          if preview.image
+                a.preview__breadcrumbs-link(href=`#`) #{category}
+          if article.picture
             div.preview__background
-              img.preview__background-image(src=`${preview.image.src}` width='460' height='240' srcset=`${preview.image.srcset}` alt=`${preview.image.alt}`)
-          time.preview__time(datetime=`${preview.datetime}`) #{preview.date}
+              img.preview__background-image(src=`${article.picture}` width='460' height='240' alt=`${article.title}`)
+          time.preview__time(datetime=`${article.datetime}`) #{article.date}
           h3.preview__name
-            a.preview__name-link(href='#') #{preview.title}
-          p.preview__text #{preview.text}
-          a.preview__comment(href='#') Комментарии 
-            span.preview__cloud 
-            b.preview__comment-count #{preview.comments}
+            a.preview__name-link(href=`/articles/${article.id}`) #{article.title}
+          p.preview__text #{article.fullText}
+          a.preview__comment(href='#') Комментарии
+            span.preview__cloud
+            b.preview__comment-count #{article.comments.length}

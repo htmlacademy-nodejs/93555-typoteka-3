@@ -2,13 +2,21 @@ extends layout/index.pug
 
 block variables
   - var wrapperClass = 'wrapper-color';
+  - var noResults = query && !articles.length;
 
 block content
   section.search-page
-    .search-page__wrapper
+    .search-page__wrapper(class=noResults ? `search-page__wrapper--empty` : ``)
       h1 Поиск
       .search.search-page__form
-        form(action='#' method='get')
+        form(action='/search' method='get')
           label
-            input(type='text' placeholder='Что ищем?')
+            input(type='text' placeholder='Что ищем?' name='query' value=`${query || ""}`)
           button.search__button.button.button--transparent(type='submit') Найти
+        each article in articles
+            .search__result
+              time.search__date(datetime=`${article.datetime}`) #{article.date}
+              a.search__link(href=`/articles/${article.id}`) #{article.title}
+      if noResults
+          p.search-page__empty
+            | Ничего не нашлось

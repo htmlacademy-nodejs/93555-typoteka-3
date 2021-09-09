@@ -1,11 +1,21 @@
-'use strict';
+"use strict";
 
-const {Router} = require(`express`);
+const { Router } = require(`express`);
 const myRouter = new Router();
-const {notes, myComments} = require(`../mocks`);
+const { api } = require(`../api/api`);
+const { transformArticle, transformComments } = require(`../api/adapter`);
 
+myRouter.get(`/`, async (_req, res) => {
+  const articles = await api.getArticles();
 
-myRouter.get(`/`, (req, res) => res.render(`my/my`, {notes}));
-myRouter.get(`/comments`, (req, res) => res.render(`my/comments`, {comments: myComments}));
+  return res.render(`my/my`, { articles: articles.map(transformArticle) });
+});
+
+myRouter.get(`/comments`, async (_req, res) => {
+  const articles = await api.getArticles();
+  const comments = articles.map(transformComments).flat();
+
+  return res.render(`my/comments`, { comments });
+});
 
 module.exports = myRouter;

@@ -12,10 +12,10 @@ block content
         each comment in comments
           li.publication__list-item
             div.publication__header
-              img.publication__list-image(src=`${comment.avatar}` width='20' height='20' alt='Аватар пользователя')
-              b.publication__list-name Александр Петров
+              img.publication__list-image(src=`${comment.avatar || '/img/avatar-small-1.png'}` width='20' height='20' alt='Аватар пользователя')
+              b.publication__list-name #{comment.author || 'Александр Петров'}
               time.publication__item-time(datetime=`${comment.datetime}`) #{comment.data}
-            a.publication__item-text(href='#') #{comment.text}
-            p.publication__text-strong #{comment.main}
+            a.publication__item-text(href=`/articles/${comment.articleId}`) #{comment.text}
+            p.publication__text-strong #{comment.articleTitle}
             button.publication__button.button.button--close-item(type='button')
             span.visually-hidden Закрыть строку списка

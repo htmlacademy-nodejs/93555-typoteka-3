@@ -7,11 +7,11 @@ block variables
 block content
   section.main-page__notes.notes
     h1.notes__title Мои записи
-    if notes.length > 0
+    if articles.length
       ul.notes__list
-        each note in notes
+        each article in articles
           li.notes__list-item
-            time.notes__item-time(datetime=`${note.datetime}`) #{note.date}
-            a.notes__item-text(href='#') #{note.text}
+            time.notes__item-time(datetime=`${article.datetime}`) #{article.date}
+            a.notes__item-text(href=`/articles/${article.id}`) #{article.title}
             button.notes__button.button.button--close-item(type='button')
               span.visually-hidden Закрыть строку списка

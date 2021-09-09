@@ -3,11 +3,11 @@ mixin LastComments(comments, className)
 
   section(class=classes)
     h2.last__name
-      | Последние комментарии 
+      | Последние комментарии
       span.last__icon.last__icon--cloud
     ul.last__list
       each comment in comments
         li.last__list-item
-          img.last__list-image(src=`${comment.avatar}` width='20' height='20' alt='Аватар пользователя')
-          b.last__list-name #{comment.author}
+          img.last__list-image(src=`${comment.avatar || '/img/avatar-small-1.png'}` width='20' height='20' alt='Аватар пользователя')
+          b.last__list-name #{comment.author || 'Анна Артамонова'}
           a.last__list-link(href='#') #{comment.text}
