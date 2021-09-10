@@ -21,26 +21,50 @@ class Api {
   }
 
   getArticles() {
-    return this._request(`/articles`);
+    try {
+      return this._request(`/articles`);
+    } catch (error) {
+      console.log(`ERROR: Get articles`);
+      return [];
+    }
   }
 
   getArticle(id) {
-    return this._request(`/articles/${id}`);
+    try {
+      return this._request(`/articles/${id}`);
+    } catch (error) {
+      console.log(`ERROR: Get article`);
+      return {};
+    }
   }
 
   searchArticles(query) {
-    return this._request(`/search`, { params: { query } });
+    try {
+      return this._request(`/search`, { params: { query } });
+    } catch (error) {
+      console.log(`ERROR: Search articles`);
+      return [];
+    }
   }
 
   async getCategories() {
-    return this._request(`/categories`);
+    try {
+      return this._request(`/categories`);
+    } catch (error) {
+      console.log(`ERROR: Get categories`);
+      return [];
+    }
   }
 
   async createArticle(data) {
-    return this._request(`/articles`, {
-      method: `POST`,
-      data,
-    });
+    try {
+      return this._request(`/articles`, {
+        method: `POST`,
+        data,
+      });
+    } catch (error) {
+      throw new Error(`ERROR: Create article`);
+    }
   }
 }
 
