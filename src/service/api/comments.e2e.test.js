@@ -70,7 +70,7 @@ describe(`API COMMENTS: CREATE`, () => {
     request(app).post(`/articles/NOEXST/comments`).send(newComment).expect((res) => expect(res.body).toEqual({})));
 
   test(`Returns 400 status code for invalid request body`, () =>
-    request(app).post(`/articles/${mockArticle.id}/comments`).send({}).expect(HttpCode.BAD_REQUEST))
+    request(app).post(`/articles/${mockArticle.id}/comments`).send({}).expect(HttpCode.BAD_REQUEST));
 
   test(`Returns empty object in body for invalid request body`, () =>
     request(app).post(`/articles/${mockArticle.id}/comments`).send({}).expect((res) => expect(res.body).toEqual({})));

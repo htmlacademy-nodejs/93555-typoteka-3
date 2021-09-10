@@ -1,4 +1,6 @@
-const { mockArticle, mockArticles } = require("./articles");
+"use strict";
+
+const { mockArticle, mockArticles } = require(`./articles`);
 
 const mockComments = mockArticles.find((item) => item.id === mockArticle.id).comments;
 const [mockComment] = mockComments;

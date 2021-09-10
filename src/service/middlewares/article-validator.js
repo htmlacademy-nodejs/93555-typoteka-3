@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 const { HttpCode } = require(`../../constants`);
 
-const articleKeys = [`title`, `announce`, `fullText`, `category`];
+const articleKeys = [`title`, `announce`, `fullText`, `categories`];
 
 module.exports = (req, res, next) => {
   const newArticle = req.body;

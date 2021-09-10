@@ -67,10 +67,10 @@ const generateArticles = async (count) => {
       title: titles[getRandomInt(0, titles.length - 1)],
       announce: shuffle(sentences).slice(0, announceCount).join(` `),
       fullText: shuffle(sentences).slice(0, fullTextCount).join(` `),
-      category: shuffle(categories).slice(0, categoryCount),
+      categories: shuffle(categories).slice(0, categoryCount),
       comments: generateComments(getRandomInt(0, comments.length - 1), comments),
       createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max))
-    }
+    };
   });
 };
 

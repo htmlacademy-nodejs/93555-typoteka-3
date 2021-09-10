@@ -1,5 +1,7 @@
-const { mockArticles } = require('./articles')
+"use strict";
 
-const mockCategories = [...new Set(mockArticles.flatMap(item => item.category))]
+const { mockArticles } = require(`./articles`);
 
-module.exports = { mockCategories }
+const mockCategories = [...new Set(mockArticles.flatMap((item) => item.categories))];
+
+module.exports = { mockCategories };

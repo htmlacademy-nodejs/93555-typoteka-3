@@ -17,7 +17,6 @@ const logger = pino({
 }, destination);
 
 
-
 const getLogger = (options = {}) => logger.child(options);
 
 module.exports = {

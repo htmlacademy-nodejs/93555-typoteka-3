@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const express = require(`express`);
 const request = require(`supertest`);
@@ -26,7 +26,10 @@ const validArticle = {
   announce: `Планируете записать видосик на эту тему? Мне не нравится ваш стиль. Ощущение что вы меня поучаете. Хочу такую же футболку :-)`,
   fullText: `Первая большая ёлка была установлена только в 1938 году. Как начать действовать? Для начала просто соберитесь.`,
   createdDate: `2021-09-03 23:52:05`,
-  category: ["Как достигнуть успеха не вставая с кресла", "Как перестать беспокоиться и начать жить"]
+  categories: [
+    `Как достигнуть успеха не вставая с кресла`,
+    `Как перестать беспокоиться и начать жить`,
+  ],
 };
 
 const invalidArticle = {
@@ -34,7 +37,6 @@ const invalidArticle = {
   announce: `Планируете записать видосик на эту тему? Мне не нравится ваш стиль. Ощущение что вы меня поучаете. Хочу такую же футболку :-)`,
   fullText: `Первая большая ёлка была установлена только в 1938 году. Как начать действовать? Для начала просто соберитесь.`,
 };
-
 
 describe(`API ARTICLE: GET MANY`, () => {
   const app = createAPI();
@@ -54,7 +56,6 @@ describe(`API ARTICLE: GET MANY`, () => {
     expect(response.body.shift().id).toBe(mockArticle.id));
 });
 
-
 describe(`API ARTICLE: GET ONE`, () => {
   const app = createAPI();
   let response;
@@ -69,7 +70,6 @@ describe(`API ARTICLE: GET ONE`, () => {
   test(`Article contains correct title`, () =>
     expect(response.body.title).toBe(mockArticle.title));
 });
-
 
 describe(`API ARTICLE: CREATE ONE`, () => {
   const app = createAPI();
@@ -86,13 +86,21 @@ describe(`API ARTICLE: CREATE ONE`, () => {
     expect(response.body).toEqual(expect.objectContaining(validArticle)));
 
   test(`Comments have increased by one`, () =>
-    request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(mockArticles.length + 1)));
+    request(app)
+      .get(`/articles`)
+      .expect((res) => expect(res.body.length).toBe(mockArticles.length + 1)));
 
   test(`Returns 400 status code for invalid request body`, () =>
-    request(app).post(`/articles`).send(invalidArticle).expect(HttpCode.BAD_REQUEST));
+    request(app)
+      .post(`/articles`)
+      .send(invalidArticle)
+      .expect(HttpCode.BAD_REQUEST));
 
   test(`Returns empty object in body for invalid request body`, () =>
-    request(app).post(`/articles`).send(invalidArticle).expect((res) => expect(res.body).toEqual({})));
+    request(app)
+      .post(`/articles`)
+      .send(invalidArticle)
+      .expect((res) => expect(res.body).toEqual({})));
 });
 
 describe(`API ARTICLE: UPDATE ONE`, () => {
@@ -100,7 +108,9 @@ describe(`API ARTICLE: UPDATE ONE`, () => {
   let response;
 
   beforeAll(async () => {
-    response = await request(app).put(`/articles/${mockArticle.id}`).send(validArticle);
+    response = await request(app)
+      .put(`/articles/${mockArticle.id}`)
+      .send(validArticle);
   });
 
   test(`Returns 200 status code for correct request`, () =>
@@ -110,21 +120,34 @@ describe(`API ARTICLE: UPDATE ONE`, () => {
     expect(response.body).toEqual(expect.objectContaining(validArticle)));
 
   test(`Article is really changed`, () =>
-    request(app).get(`/articles/${mockArticle.id}`).expect((res) => expect(res.body.title).toBe(validArticle.title)));
+    request(app)
+      .get(`/articles/${mockArticle.id}`)
+      .expect((res) => expect(res.body.title).toBe(validArticle.title)));
 
   test(`Returns 404 status code for invalid article id`, () =>
-    request(app).put(`/articles/NOEXST`).send(validArticle).expect(HttpCode.NOT_FOUND));
+    request(app)
+      .put(`/articles/NOEXST`)
+      .send(validArticle)
+      .expect(HttpCode.NOT_FOUND));
 
   test(`Returns empty object in body for invalid article id`, () =>
-    request(app).post(`/articles/NOEXST`).send(validArticle).expect((res) => expect(res.body).toEqual({})));
+    request(app)
+      .post(`/articles/NOEXST`)
+      .send(validArticle)
+      .expect((res) => expect(res.body).toEqual({})));
 
   test(`Returns 400 status code for invalid request body`, () =>
-    request(app).put(`/articles/${mockArticle.id}`).send(invalidArticle).expect(HttpCode.BAD_REQUEST))
+    request(app)
+      .put(`/articles/${mockArticle.id}`)
+      .send(invalidArticle)
+      .expect(HttpCode.BAD_REQUEST));
 
   test(`Returns empty object in body for invalid request body`, () =>
-    request(app).put(`/articles/${mockArticle.id}`).send(invalidArticle).expect((res) => expect(res.body).toEqual({}))
-  )
-})
+    request(app)
+      .put(`/articles/${mockArticle.id}`)
+      .send(invalidArticle)
+      .expect((res) => expect(res.body).toEqual({})));
+});
 
 describe(`API ARTICLE: DELETE`, () => {
   const app = createAPI();
@@ -141,13 +164,15 @@ describe(`API ARTICLE: DELETE`, () => {
     expect(response.body.id).toBe(mockArticle.id));
 
   test(`Articles decreased by one`, () =>
-    request(app).get(`/articles`).expect((res) => expect(res.body.length).toBe(mockArticles.length - 1))
-  );
+    request(app)
+      .get(`/articles`)
+      .expect((res) => expect(res.body.length).toBe(mockArticles.length - 1)));
 
   test(`Returns 404 status code for invalid article id`, () =>
     request(app).delete(`/articles/NOEXST`).expect(HttpCode.NOT_FOUND));
 
   test(`Returns empty object in body for invalid article id`, () =>
-    request(app).delete(`/articles/NOEXST`).expect((res) => expect(res.body).toEqual({})));
+    request(app)
+      .delete(`/articles/NOEXST`)
+      .expect((res) => expect(res.body).toEqual({})));
 });
-

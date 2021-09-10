@@ -9,3 +9,6 @@ env:
 extends: "htmlacademy/node"
 
 ignorePatterns: "**/express/public/**/*.js"
+
+rules:
+  "object-curly-spacing": [2, "always"]
