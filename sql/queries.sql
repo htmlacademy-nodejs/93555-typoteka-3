@@ -1,5 +1,5 @@
 -- Получить список всех категорий
-SELECT * FROM categories
+SELECT id, name FROM categories
 
 -- Получить список категорий для которых создана минимум одна публикация
 SELECT id, name FROM categories
@@ -37,6 +37,7 @@ SELECT
   articles.id,
   articles.title,
   articles.announce,
+  articles.full_text,
   articles.created_at,
   users.first_name,
   users.last_name,
