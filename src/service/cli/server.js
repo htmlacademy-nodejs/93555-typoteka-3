@@ -8,6 +8,7 @@ const getApiRoutes = require(`../api`);
 const { apiLogger } = require(`../lib/logger`);
 const { logRequests, logNotFound } = require(`../middlewares/logHttp`);
 const { logErrors } = require(`../middlewares/logErrors`);
+const sequelize = require(`../lib/sequelize`);
 
 const DEFAULT_PORT = 3000;
 
@@ -21,6 +22,16 @@ module.exports = {
       apiLogger.error(chalk.red(`You must enter a number as the port`));
       process.exit(ExitCode.error);
     }
+
+    try {
+      apiLogger.info(`Trying to connect to database...`);
+      await sequelize.authenticate();
+    } catch (err) {
+      apiLogger.error(`An error occurred: ${err.message}`);
+      process.exit(ExitCode.error);
+    }
+
+    apiLogger.info(`Connection to database established`);
 
     const routes = await getApiRoutes();
 
