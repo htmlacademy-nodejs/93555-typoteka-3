@@ -11,7 +11,7 @@ block content
           a.post__backwards.button.button--backwards(href='#') Назад
           time.post__date(datetime=`${article.datetime}`) #{article.date}
           h2.post__title.title.title--main #{article.title}
-          +Themes(themes, 'post__themes')
+          +Themes(categories, 'post__themes')
         div.post__picture
           img(src=`${article.picture ? `/img/${article.picture}` : '/img/sea-fullsize@1x.jpg'}` alt=`${article.title}`)
         div.post__text

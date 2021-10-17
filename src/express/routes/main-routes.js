@@ -2,16 +2,15 @@
 
 const { Router } = require(`express`);
 const mainRouter = new Router();
-const { themes } = require(`../mocks`);
 const { api } = require(`../api/api`);
 const { transformArticle } = require(`../api/adapter`);
 const { HttpCode } = require(`../../constants`);
 
 mainRouter.get(`/`, async (_req, res) => {
-  const articles = await api.getArticles();
+  const [articles, categories] = await Promise.all([api.getArticles({ comments: true }), api.getCategories()]);
 
   return res.render(`main`, {
-    themes,
+    categories,
     articles: articles.map(transformArticle),
     comments: articles.flatMap((article) => article.comments).slice(0, 10),
   });

@@ -7,8 +7,8 @@ const { HttpCode } = require(`../../constants`);
 module.exports = (appRouter, service) => {
   const router = new Router();
 
-  router.get(`/`, (_req, res) => {
-    const categories = service.findAll();
+  router.get(`/`, async (_req, res) => {
+    const categories = await service.findAll();
 
     return res.status(HttpCode.OK).json(categories);
   });

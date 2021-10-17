@@ -2,7 +2,8 @@
 
 const { Router } = require(`express`);
 const chalk = require(`chalk`);
-
+const sequelize = require(`../lib/sequelize`);
+const defineModels = require(`../models`);
 const category = require(`./category`);
 const article = require(`./article`);
 const comments = require(`./comments`);
@@ -15,18 +16,17 @@ const {
   CommentService,
 } = require(`../data-service`);
 
-const getMockData = require(`../lib/get-mock-data`);
 
 const getApiRoutes = async () => {
   const appRouter = new Router();
 
   try {
-    const mockData = await getMockData();
+    defineModels(sequelize);
 
-    category(appRouter, new CategoryService(mockData));
-    article(appRouter, new ArticleService(mockData));
-    comments(appRouter, new ArticleService(mockData), new CommentService());
-    search(appRouter, new SearchService(mockData));
+    category(appRouter, new CategoryService(sequelize));
+    article(appRouter, new ArticleService(sequelize));
+    comments(appRouter, new ArticleService(sequelize), new CommentService(sequelize));
+    search(appRouter, new SearchService(sequelize));
 
     return appRouter;
   } catch (error) {

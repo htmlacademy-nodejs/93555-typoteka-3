@@ -3,7 +3,7 @@ mixin CategortList(categories)
    each category, index in categories
     li.category__list-item
       form(action='#' method='POST')
-        input(id=`modify-form-category-${index+1}`)(type='text' name='category' value=`${category}`)
+        input(id=`modify-form-category-${index+1}`)(type='text' name='category' value=`${category.name}`)
         label(for=`modify-form-category-${index+1}`)
           span.visually-hidden Редактировать категорию
         button.category__button.button.button--category(type='submit') Сохранить

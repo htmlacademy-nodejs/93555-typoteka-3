@@ -18,19 +18,6 @@ const FILE_CATEGORIES_PATH = `./data/categories.txt`;
 const FILE_COMMENTS_PATH = `./data/comments.txt`;
 const FILE_USERS_PATH = `./data/users.txt`;
 
-const Time = {
-  MS: 1000,
-  SECONDS: 60,
-  MINUTES: 60,
-  HOURS: 24,
-  DAYS_LIMIT: 90
-};
-
-const DateLimits = {
-  min: Date.now() - Time.SECONDS * Time.MINUTES * Time.HOURS * Time.DAYS_LIMIT * Time.MS,
-  max: Date.now()
-};
-
 
 const readContent = async (filePath) => {
   try {
@@ -63,7 +50,6 @@ const generateArticles = async ({ count, sentences, titles, categories, comments
       fullText: shuffle(sentences).slice(0, fullTextCount).join(` `),
       categories: shuffle(categories).slice(0, categoryCount),
       comments: generateComments(getRandomInt(0, comments.length - 1), comments).map((item) => ({ userId, text: item.text })),
-      createdDate: new Date(getRandomInt(DateLimits.min, DateLimits.max)),
       userId
     };
   });

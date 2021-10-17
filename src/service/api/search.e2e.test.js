@@ -2,30 +2,37 @@
 
 const express = require(`express`);
 const request = require(`supertest`);
+const Sequelize = require(`sequelize`);
 
+const initDB = require(`../lib/init-db`);
 const search = require(`./search`);
 const SearchService = require(`../data-service/search`);
 
 const { HttpCode } = require(`../../constants`);
-const { mockArticle, mockArticles } = require(`../mocks/articles`);
+const { mockArticles, mockArticle } = require(`../mocks/articles`);
+const { mockCategories } = require(`../mocks/category`);
+const { mockUsers } = require(`../mocks/users`);
 
-const createAPI = () => {
+const createAPI = async () => {
+  const mockDB = new Sequelize(`sqlite::memory:`, { logging: false });
+  await initDB(mockDB, { categories: mockCategories, articles: mockArticles, users: mockUsers });
+
   const app = express();
   app.use(express.json());
 
-  search(app, new SearchService(mockArticles));
+  search(app, new SearchService(mockDB));
 
   return app;
 };
 
 describe(`API SEARCH`, () => {
-  const app = createAPI();
-
+  let app;
   let response;
 
   beforeAll(async () => {
+    app = await createAPI();
     response = await request(app).get(`/search`).query({
-      query: `прог`
+      query: `Прог`
     });
   });
 
@@ -33,10 +40,10 @@ describe(`API SEARCH`, () => {
     expect(response.statusCode).toBe(HttpCode.OK));
 
   test(`Returns correct search result length`, () =>
-    expect(response.body.length).toBe(2));
+    expect(response.body.length).toBe(1));
 
   test(`Result array has correct id`, () =>
-    expect(response.body.shift().id).toBe(mockArticle.id));
+    expect(response.body.shift().title).toBe(mockArticle.title));
 
   test(`Returns status code 404 for not found`, () =>
     request(app).get(`/search`).query({ query: `помидор` }).expect(HttpCode.NOT_FOUND)

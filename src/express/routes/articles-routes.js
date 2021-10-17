@@ -3,18 +3,18 @@
 const { Router } = require(`express`);
 
 const articlesRouter = new Router();
-const { themes, previews } = require(`../mocks`);
+const { previews } = require(`../mocks`);
 const { api } = require(`../api/api`);
 const { transformArticle, parseCreatedArticle } = require(`../api/adapter`);
 const { upload } = require(`../lib/upload`);
 
 const renderPost = async (req, res, next) => {
   try {
-    const article = await api.getArticle(req.params.id);
+    const [article, categories] = await Promise.all([api.getArticle(req.params.id), api.getCategories()]);
 
     return res.render(`articles/post`, {
       article: transformArticle(article),
-      themes,
+      categories,
       comments: article.comments,
     });
   } catch (err) {
@@ -34,9 +34,11 @@ const renderAddPost = async (req, res) => {
   });
 };
 
-articlesRouter.get(`/category/:id`, (_req, res) =>
-  res.render(`articles/articles-by-category`, { themes, previews })
-);
+articlesRouter.get(`/category/:id`, async (req, res) => {
+  const [articles, categories] = await Promise.all([api.getArticles({ comments: true }), api.getCategories()]);
+
+  res.render(`articles/articles-by-category`, { articles, categories, previews });
+});
 
 articlesRouter.get(`/add`, renderAddPost);
 
