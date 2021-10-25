@@ -20,9 +20,9 @@ class Api {
     return response.data;
   }
 
-  getArticles() {
+  getArticles({ comments }) {
     try {
-      return this._request(`/articles`);
+      return this._request(`/articles`, { params: { comments } });
     } catch (error) {
       console.log(`ERROR: Get articles`);
       return [];

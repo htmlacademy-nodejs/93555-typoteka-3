@@ -9,7 +9,7 @@ mixin PreviewList(articles, className)
           ul.preview__breadcrumbs
             each category in article.categories
               li.preview__breadcrumbs-item
-                a.preview__breadcrumbs-link(href=`#`) #{category}
+                a.preview__breadcrumbs-link(href=`#`) #{category.name}
           if article.picture
             div.preview__background
               img.preview__background-image(src=`${article.picture}` width='460' height='240' alt=`${article.title}`)

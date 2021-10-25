@@ -3,7 +3,7 @@
 const { format, parse } = require(`date-fns`);
 
 module.exports.transformArticle = (article) => {
-  const date = new Date(article.createdDate);
+  const date = new Date(article.createdAt);
 
   return {
     ...article,

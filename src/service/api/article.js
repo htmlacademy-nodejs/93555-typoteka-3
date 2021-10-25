@@ -9,38 +9,40 @@ const articleExist = require(`../middlewares/article-exists`);
 module.exports = (appRouter, articleService) => {
   const router = new Router();
 
-  router.get(`/`, (_req, res) => {
-    const articles = articleService.findAll();
+  router.get(`/`, async (req, res) => {
+    const { comments } = req.query;
+    const needComments = comments === `true`;
+    const articles = await articleService.findAll(needComments);
 
     return res.status(HttpCode.OK).json(articles);
   });
 
-  router.get(`/:articleId`, articleExist(articleService), (req, res) => {
+  router.get(`/:articleId`, articleExist(articleService), (_req, res) => {
     const { article } = res.locals;
 
     return res.status(HttpCode.OK).json(article);
   });
 
-  router.post(`/`, articleValidator, (req, res) => {
-    const article = articleService.create(req.body);
+  router.post(`/`, articleValidator, async (req, res) => {
+    const article = await articleService.create(req.body);
 
     return res.status(HttpCode.CREATED).json(article);
   });
 
-  router.put(`/:articleId`, [articleExist(articleService), articleValidator], (req, res) => {
+  router.put(`/:articleId`, [articleExist(articleService), articleValidator], async (req, res) => {
     const { article } = res.locals;
 
-    const updatedarticle = articleService.update(article.id, req.body);
+    const updatedarticle = await articleService.update(article.id, req.body);
 
     return res.status(HttpCode.OK).json(updatedarticle);
   });
 
-  router.delete(`/:articleId`, articleExist(articleService), (_req, res) => {
+  router.delete(`/:articleId`, articleExist(articleService), async (_req, res) => {
     const { article } = res.locals;
 
-    const articleId = articleService.remove(article.id);
+    const result = await articleService.remove(article.id);
 
-    return res.status(HttpCode.OK).json({ id: articleId });
+    return res.status(HttpCode.OK).json({ result });
   });
 
   appRouter.use(`/articles`, router);

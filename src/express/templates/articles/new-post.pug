@@ -31,8 +31,8 @@ block content
                 button.button.button--transparent Удалить
               each category, i in categories
                 .new-publication__checkbox.new-publication__checkbox--auto
-                  input(id=`checkbox-${i}` name=`categories[]` value=category type=`checkbox` checked=isChecked(category))
-                  label(for=`checkbox-${i}`) #{category}
+                  input(id=`checkbox-${i}` name=`categories[]` value=category.id type=`checkbox` checked=isChecked(category.id))
+                  label(for=`checkbox-${i}`) #{category.name}
               a.new-publication__form-link.button.button--transparent(href=`#`) Добавить категорию
             .form__wrapper.form__wrapper--text
               .form__field.form__field--publication-text
