@@ -10,23 +10,27 @@ module.exports = (appRouter, articleService) => {
   const router = new Router();
 
   router.get(`/`, async (req, res) => {
-    const { comments } = req.query;
+    const { offset, limit, comments } = req.query;
     const needComments = comments === `true`;
-    const articles = await articleService.findAll(needComments);
+    const needPagination = Boolean(offset || limit);
+
+    const articles = needPagination
+      ? await articleService.findPage({ offset: Number(offset), limit: Number(limit) })
+      : await articleService.findAll({ needComments });
 
     return res.status(HttpCode.OK).json(articles);
-  });
-
-  router.get(`/:articleId`, articleExist(articleService), (_req, res) => {
-    const { article } = res.locals;
-
-    return res.status(HttpCode.OK).json(article);
   });
 
   router.post(`/`, articleValidator, async (req, res) => {
     const article = await articleService.create(req.body);
 
     return res.status(HttpCode.CREATED).json(article);
+  });
+
+  router.get(`/:articleId`, articleExist(articleService), (_req, res) => {
+    const { article } = res.locals;
+
+    return res.status(HttpCode.OK).json(article);
   });
 
   router.put(`/:articleId`, [articleExist(articleService), articleValidator], async (req, res) => {

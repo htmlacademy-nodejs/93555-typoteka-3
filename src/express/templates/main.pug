@@ -3,6 +3,7 @@ include partials/mixins/preview-list.pug
 include partials/mixins/themes.pug
 include partials/mixins/hot-news.pug
 include partials/mixins/last-comments.pug
+include partials/mixins/pagination.pug
 
 block variables
   - var mainClass = 'main-page';
@@ -17,3 +18,4 @@ block content
     +LastComments(comments, 'main-page__last')
 
   +PreviewList(articles, 'main-page__list')
+  +Pagination(page, totalPages, 2, `?`)

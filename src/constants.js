@@ -25,5 +25,10 @@ module.exports.API_PREFIX = `/api`;
 
 module.exports.ENV = {
   DEVELOPMENT: `development`,
-  PRODUCTION: `production`
+  PRODUCTION: `production`,
+};
+
+module.exports.PAGINATION = {
+  ARTICLES_PER_PAGE: 8,
+  ARTICLES_SKIP_PAGE_COUNT: 1,
 };
