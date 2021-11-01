@@ -22,7 +22,7 @@ class ArticleService {
     return Boolean(deletedRows);
   }
 
-  async findAll(needComments) {
+  async findAll({ needComments }) {
     const include = [Aliase.CATEGORIES];
 
     if (needComments) {
@@ -31,12 +31,25 @@ class ArticleService {
 
     const articles = await this._Article.findAll({
       include,
-      order: [
-        [`createdAt`, `DESC`]
-      ]
+      order: [[`createdAt`, `DESC`]]
     });
 
-    return articles.map((item) => item.get());
+    return { articles: articles.map((item) => item.get()) };
+  }
+
+  async findPage({ limit, offset }) {
+    const { count, rows } = await this._Article.findAndCountAll({
+      limit,
+      offset,
+      include: [Aliase.CATEGORIES, Aliase.COMMENTS],
+      order: [[`createdAt`, `DESC`]],
+      distinct: true
+    });
+
+    return {
+      count,
+      articles: rows.map((item) => item.get()),
+    };
   }
 
   async findOne(id) {

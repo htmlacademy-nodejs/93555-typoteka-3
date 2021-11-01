@@ -4,15 +4,31 @@ const { Router } = require(`express`);
 const mainRouter = new Router();
 const { api } = require(`../api/api`);
 const { transformArticle } = require(`../api/adapter`);
-const { HttpCode } = require(`../../constants`);
+const { HttpCode, PAGINATION } = require(`../../constants`);
 
-mainRouter.get(`/`, async (_req, res) => {
-  const [articles, categories] = await Promise.all([api.getArticles({ comments: true }), api.getCategories()]);
+
+mainRouter.get(`/`, async (req, res) => {
+  const { page = 1 } = req.query;
+  const parsedPage = Number(page);
+  const offset = (parsedPage - PAGINATION.ARTICLES_SKIP_PAGE_COUNT) * PAGINATION.ARTICLES_PER_PAGE;
+
+  const [{ count, articles }, categories] = await Promise.all([
+    api.getArticles({
+      limit: PAGINATION.ARTICLES_PER_PAGE,
+      offset,
+      comments: true
+    }),
+    api.getCategories()
+  ]);
+
+  const totalPages = Math.ceil(count / PAGINATION.ARTICLES_PER_PAGE);
 
   return res.render(`main`, {
     categories,
     articles: articles.map(transformArticle),
     comments: articles.flatMap((article) => article.comments).slice(0, 10),
+    page: parsedPage,
+    totalPages
   });
 });
 
